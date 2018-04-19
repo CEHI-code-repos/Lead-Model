@@ -91,7 +91,7 @@ monthToSeason <- function(monthVector) {
   }
   return(season)
 }
-data$season <- monthToSeason(data${month})
+dataRead$season <- monthToSeason(dataRead${month})
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
