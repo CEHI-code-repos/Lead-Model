@@ -74,24 +74,22 @@ dbfTracts <- read.dbf(dbfFilePath)
 # # # # # # # # # # # # # # # # # # # #
 
 # New variable as season
-monthToSeason <- function(monthVector) {
-  for(month in monthVector) {
-    if(month %in% c(12, 1:2)) {
-      season <- c(season, "Winter")
-    } else if(month %in% c(3:5)) {
-      season <- c(season, "Spring")
-    } else if(month %in% c(6:8)) {
-      season <- c(season, "Summer")
-    } else if(month %in% c(9:11)) {
-      season <- c(season, "Fall")
-    } else {
-      print("The wrong value for month!")
-      season <- c(season, NA)
-    } 
-  }
+monthToSeason <- function(month) {
+  if(month %in% c(12, 1:2)) {
+    season <- c(season, "Winter")
+  } else if(month %in% c(3:5)) {
+    season <- c(season, "Spring")
+  } else if(month %in% c(6:8)) {
+    season <- c(season, "Summer")
+  } else if(month %in% c(9:11)) {
+    season <- c(season, "Fall")
+  } else {
+    print("The wrong value for month!")
+    season <- c(season, NA)
+  } 
   return(season)
 }
-dataRead$season <- monthToSeason(dataRead${month})
+dataRead$season <- unlist(lapply(dataRead${month}, monthToSeason))
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -100,6 +98,7 @@ dataRead$season <- monthToSeason(dataRead${month})
 
 #### Note
 # data: dataset
+# potential useful to use lapply for modeling each county
 # data$cluster_list: variable representing the cluster
 
 # define model formula
