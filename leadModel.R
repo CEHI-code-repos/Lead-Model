@@ -107,16 +107,19 @@ modelFormula <- as.formula(ln_bll ~ year_blt + hh_median_inc +
                              pct_blk + pct_hisp + pct_pub_ass + 
                              season_dummies + cnty_dummies)
 
-# plm is used for linea model needed clustering
-leadModel <- plm(modelFormula, data = data, 
-                 weights = 1/parcel_field, model = "pooling")
+leadModeling <- function(dataset, modelFormula) {
 
-# adjust df
-G <- length(unique(data$cluster_list))
-N <- length(data$cluster_list)
-dfa <- (G/(G - 1)) * (N - 1)/leadModel$df.residual
-clusterCVcov <- dfa * vcovHC(leadModel, type = "HC1",
-                             cluster = "group", adjust = T)
-coeftest(leadModel, vcov = clusterCVcov)
+  # plm is used for linea model needed clustering
+  leadModel <- plm(modelFormula, data = dataset, 
+                   weights = 1/parcel_field, model = "pooling")
 
-
+  # adjust df
+  G <- length(unique(dataset$cluster_list))
+  N <- length(dataset$cluster_list)
+  dfa <- (G/(G - 1)) * (N - 1)/leadModel$df.residual
+  clusterCVcov <- dfa * vcovHC(leadModel, type = "HC1",
+                               cluster = "group", adjust = T)
+  coeftestResult <- coeftest(leadModel, vcov = clusterCVcov)
+  outputList <- list(leadModel, coeftestResult)
+  return ooutputList
+}
