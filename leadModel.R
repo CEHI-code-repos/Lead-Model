@@ -54,6 +54,7 @@ library("plm")
 # reference: http://alexrdouglas.com/tutorial-regression-in-stata-and-python/
 # http://projects.iq.harvard.edu/files/gov2001/files/sesection_5.pdf
 # https://cran.r-project.org/web/packages/clubSandwich/vignettes/panel-data-CRVE.html
+# http://math.furman.edu/~dcs/courses/math47/R/library/car/html/hccm.html
 # http://www.richard-bluhm.com/clustered-ses-in-r-and-stata-2/
 # the website above claimed that stata use HC1 to do the cluster
 
