@@ -102,9 +102,25 @@ dataRead$season <- unlist(lapply(dataRead${month}, monthToSeason))
 # potential useful to use lapply for modeling each county
 # data$cluster_list: variable representing the cluster
 
+# copy from documentation:
+# date: county tax assessor data, or census data
+# response: Maximum blood lead level per child per tax parcel
+# predictor: 
+# Persons receiving public assistance (block group level)
+# Median household income (block group level)
+# African American persons (block level)
+# Hispanic persons (block level)
+
+# Model:
+' *Outcome was the natural log of blood lead levels. Model controlled for year in which the residence was built (from county tax assessor database), U.S. Census block-level % black and % Hispanic, U.S. Census block group-level household median income, % households receiving public assistance, and county of residence. In addition, we accounted for the season of blood lead screening
+*Applied the vector of coefficients from the regression model at the individual blood lead level to predict the expected blood lead level for each parcel
+*Regression model was weighted by inverse of count of children per parcel (to ensure that parcels with multiple blood lead screens did not overly influence the analysis) and standard errors were corrected for block group-level clustering
+*Parcels ranked by expected blood lead level in terms of the top 10%, next 10%, next 40%, and last 40% for priority categories
+*Lead exposure risk is also mapped – this is the expected logged blood lead level at the parcel level'
+
 # define model formula
 modelFormula <- as.formula(ln_bll ~ year_blt + hh_median_inc +
-                             pct_blk + pct_hisp + pct_pub_ass + 
+                             pct_blk + pct_hisp + pct_pub_assis + 
                              season_dummies + cnty_dummies)
 
 leadModeling <- function(dataset, modelFormula) {
