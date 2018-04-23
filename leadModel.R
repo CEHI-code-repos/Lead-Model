@@ -136,6 +136,20 @@ leadModeling <- function(dataset, modelFormula) {
   clusterCVcov <- dfa * vcovHC(leadModel, type = "HC1",
                                cluster = "group", adjust = T)
   coeftestResult <- coeftest(leadModel, vcov = clusterCVcov)
-  outputList <- list(leadModel, coeftestResult)
-  return ooutputList
+  predictResult <- predict(leadModel)
+  predictResultPercentile <- quantile(predictResult, seq(5.5,95.5,5)/100, type=4)
+  getPriority <- function(bllLn, bllLnPerc) {
+	  if(bllLn > bllLnPerc[15]) {
+	  return 1
+	  } else if(bllLn > bllLnPerc[10] & bllLn <= bllLnPerc[15]) {
+      return 2
+	  } else if(bllLn > 0 & bllLn <= bllLnPerc[10]) {
+      return 3
+	  } else { return NA}
+  }
+  priorityResult <- sapply(predictResult, getPriority, var2=predictResultPercentile)
+  outputList <- list(leadModel, coeftestResult, priorityResult)
+  return outputList
 }
+
+
