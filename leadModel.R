@@ -112,9 +112,15 @@ dataRead$season <- unlist(lapply(dataRead${month}, monthToSeason))
 # Hispanic persons (block level)
 
 # Model:
+' *Prediction.(can be used as RR)'
+
+' *relative risk is not meant to be predictive for actual blood lead levels of children residing at a particular residence. Rather, it should be interpreted as a mechanism for prioritizing lead poisoning prevention program resources and activities.'
+
+' *explain the relationship between age of housing and BLL.'
+
 ' *Outcome was the natural log of blood lead levels. Model controlled for year in which the residence was built (from county tax assessor database), U.S. Census block-level % black and % Hispanic, U.S. Census block group-level household median income, % households receiving public assistance, and county of residence. In addition, we accounted for the season of blood lead screening
 *Applied the vector of coefficients from the regression model at the individual blood lead level to predict the expected blood lead level for each parcel
-*Regression model was weighted by inverse of count of children per parcel (to ensure that parcels with multiple blood lead screens did not overly influence the analysis) and standard errors were corrected for block group-level clustering
+*Regresion model was weighted by inverse of count of children per parcel (to ensure that parcels with multiple blood lead screens did not overly influence the analysis) and standard errors were corrected for block group-level clustering
 *Parcels ranked by expected blood lead level in terms of the top 10%, next 10%, next 40%, and last 40% for priority categories
 *Lead exposure risk is also mapped – this is the expected logged blood lead level at the parcel level'
 
@@ -132,6 +138,8 @@ leadModeling <- function(dataset, modelFormula) {
   # adjust df
   G <- length(unique(dataset$cluster_list))
   N <- length(dataset$cluster_list)
+  # note for clustering or not: 
+  # coef not changed (point estimate is the same), but covar matrix changed. so CI, PI, t-statistics etc. changed.
   dfa <- (G/(G - 1)) * (N - 1)/leadModel$df.residual
   clusterCVcov <- dfa * vcovHC(leadModel, type = "HC1",
                                cluster = "group", adjust = T)
