@@ -145,7 +145,7 @@ leadModeling <- function(dataset, modelFormula) {
       return 2
 	  } else if(bllLn > 0 & bllLn <= bllLnPerc[10]) {
       return 3
-	  } else { return NA}
+	  } else { return NA }
   }
   priorityResult <- sapply(predictResult, getPriority, var2=predictResultPercentile)
   outputList <- list(leadModel, coeftestResult, priorityResult)
