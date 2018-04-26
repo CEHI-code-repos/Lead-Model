@@ -71,8 +71,16 @@ dbfFilePath <- ""
 dbfTracts <- read.dbf(dbfFilePath)
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# # # Step 1.2. Data processing # # # # # # # # # # # # # # # # # # # #
+# # # Step 1.3. Data cleaning & processing # # # # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # # # # #
+
+cleanData <- function(dataset) {
+  cleanDataSet <- dataset %>% 
+		select() %>%
+		filter() %>%
+		mutate() 
+  return cleanDataSet
+}
 
 # New variable as season
 monthToSeason <- function(month) {
